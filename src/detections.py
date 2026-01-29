@@ -69,6 +69,7 @@ def detect_bruteforce_by_ip(
                         "end_time": end_time,
                         "count": count,
                         "evidence": evidence,
+                        "username": None,
                     }
                 )
 
@@ -152,4 +153,73 @@ def detect_success_after_failures(
             )
 
     return pd.DataFrame(alerts)
+
+def detect_success_after_failures(
+    events: pd.DataFrame,
+    failure_threshold: int = 5,
+    window_minutes: int = 30,
+) -> pd.DataFrame:
+    """
+    Alert when a SUCCESS_LOGIN occurs from an IP that had >= failure_threshold
+    FAILED_LOGIN events within the previous window_minutes.
+    """
+    df = events.copy()
+
+    failures = df[
+        (df["event_type"] == "FAILED_LOGIN")
+        & df["ip"].notna()
+        & df["timestamp"].notna()
+    ].copy()
+
+    successes = df[
+        (df["event_type"] == "SUCCESS_LOGIN")
+        & df["ip"].notna()
+        & df["timestamp"].notna()
+    ].copy()
+
+    if failures.empty or successes.empty:
+        return pd.DataFrame(
+            columns=["alert_type", "severity", "ip", "username", "start_time", "end_time", "count", "evidence"]
+        )
+
+    window = pd.Timedelta(minutes=window_minutes)
+    alerts = []
+
+    for _, s in successes.iterrows():
+        ip = s["ip"]
+        success_time = s["timestamp"]
+        username = s["username"]
+
+        recent_failures = failures[
+            (failures["ip"] == ip)
+            & (failures["timestamp"] >= success_time - window)
+            & (failures["timestamp"] < success_time)
+        ]
+
+        failure_count = len(recent_failures)
+
+        if failure_count >= failure_threshold:
+            evidence = recent_failures.tail(3)["raw"].tolist()
+            evidence.append(s["raw"])
+
+            first_failure_time = recent_failures["timestamp"].min()
+
+            alerts.append(
+                {
+       		   "alert_type": "SUCCESS_AFTER_FAILURES",
+                   "severity": "HIGH",
+                   "ip": ip,
+                   "username": username,
+                   "start_time": first_failure_time,
+                   "end_time": success_time,
+                   "count": failure_count,
+                   "evidence": " | ".join(evidence),
+                }
+            )
+
+    return pd.DataFrame(alerts)
+
+
+
+
 
