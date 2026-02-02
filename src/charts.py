@@ -29,7 +29,6 @@ def plot_failed_login_timeline(events: pd.DataFrame, out_path: str | Path, freq:
     """
     df = events[(events["event_type"] == "FAILED_LOGIN") & events["timestamp"].notna()].copy()
     if df.empty:
-        # still create an empty chart (optional), but we'll just skip for MVP
         return
 
     df = df.set_index("timestamp")
