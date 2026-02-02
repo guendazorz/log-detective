@@ -17,9 +17,7 @@ st.title("🕵️ Log Detective — Mini SOC Dashboard")
 st.caption("Parse Linux auth logs → detect suspicious patterns → visualize + export alerts")
 
 
-# -------------------------
 # Sidebar controls
-# -------------------------
 st.sidebar.header("Data source")
 
 default_path = Path("data/sample_auth.log")
@@ -38,9 +36,8 @@ saf_window = st.sidebar.slider("Success-after-failures: lookback window (minutes
 timeline_bucket = st.sidebar.selectbox("Timeline bucket size", ["1min", "5min", "15min", "30min"], index=0)
 
 
-# -------------------------
+
 # Load logs
-# -------------------------
 def load_log_to_path() -> Path | None:
     """
     Returns a filesystem path to a log file:
@@ -57,7 +54,7 @@ def load_log_to_path() -> Path | None:
         st.info("Upload a log file or enable the sample log.")
         return None
 
-    # Write upload to a temp file so our parser (which expects a path) can read it
+    
     tmp = tempfile.NamedTemporaryFile(delete=False, suffix=".log")
     tmp.write(uploaded.getvalue())
     tmp.flush()
@@ -69,9 +66,8 @@ if log_path is None:
     st.stop()
 
 
-# -------------------------
+
 # Parse + detect
-# -------------------------
 events = parse_auth_log(log_path)
 
 alerts_bf = detect_bruteforce_by_ip(events, threshold=bf_threshold, window_minutes=bf_window)
@@ -81,14 +77,13 @@ all_alerts = alerts_bf
 if not alerts_saf.empty:
     all_alerts = pd.concat([alerts_bf, alerts_saf], ignore_index=True)
 
-# Order columns nicely if present
+
 preferred_cols = ["alert_type", "severity", "ip", "username", "start_time", "end_time", "count", "evidence"]
 all_alerts = all_alerts[[c for c in preferred_cols if c in all_alerts.columns]]
 
 
-# -------------------------
+
 # Top metrics
-# -------------------------
 col1, col2, col3, col4 = st.columns(4)
 
 with col1:
@@ -106,9 +101,8 @@ with col4:
     st.metric("Alerts generated", len(all_alerts))
 
 
-# -------------------------
+
 # Alerts + Data
-# -------------------------
 left, right = st.columns([1, 1])
 
 with left:
@@ -118,7 +112,7 @@ with left:
     else:
         st.dataframe(all_alerts, use_container_width=True)
 
-        # Download alerts CSV
+        
         st.download_button(
             label="Download alerts CSV",
             data=all_alerts.to_csv(index=False).encode("utf-8"),
@@ -130,7 +124,7 @@ with right:
     st.subheader("📄 Parsed events (preview)")
     st.dataframe(events.head(200), use_container_width=True)
 
-    # Download parsed events CSV
+    
     st.download_button(
         label="Download parsed events CSV",
         data=events.to_csv(index=False).encode("utf-8"),
@@ -139,9 +133,8 @@ with right:
     )
 
 
-# -------------------------
+
 # Charts (generated to temp files)
-# -------------------------
 st.subheader("📊 Visuals")
 
 chart1, chart2 = st.columns(2)
