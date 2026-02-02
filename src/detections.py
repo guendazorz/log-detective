@@ -17,7 +17,7 @@ def detect_bruteforce_by_ip(
       alert_type, severity, ip, start_time, end_time, count, evidence
     """
 
-    # 1) Keep only failed logins that have an IP + timestamp
+
     df = events.copy()
     df = df[
         (df["event_type"] == "FAILED_LOGIN")
@@ -25,39 +25,37 @@ def detect_bruteforce_by_ip(
         & df["timestamp"].notna()
     ].copy()
 
-    # If there's nothing to analyze, return empty alerts table
+    
     if df.empty:
         return pd.DataFrame(
             columns=["alert_type", "severity", "ip", "start_time", "end_time", "count", "evidence"]
         )
 
-    # Sort by time so the sliding window logic works
+    
     df = df.sort_values("timestamp")
 
     window = pd.Timedelta(minutes=window_minutes)
     alerts = []
 
-    # 2) Analyze each IP separately
+    
     for ip, group in df.groupby("ip"):
         times = group["timestamp"].tolist()
         raws = group["raw"].tolist()
 
         left = 0
 
-        # 3) Sliding window over time
+        
         for right in range(len(times)):
-            # Shrink window until it's within the allowed time range
             while times[right] - times[left] > window:
                 left += 1
 
             count = right - left + 1
 
-            # If we cross threshold, we record an alert
+        
             if count >= threshold:
                 start_time = times[left]
                 end_time = times[right]
 
-                # Evidence: last ~3 raw lines in the window (enough to prove it)
                 evidence = " | ".join(raws[max(left, right - 2) : right + 1])
 
                 alerts.append(
@@ -72,8 +70,6 @@ def detect_bruteforce_by_ip(
                         "username": None,
                     }
                 )
-
-                # MVP choice: once we flag an IP once, stop adding more alerts for it
                 break
 
     return pd.DataFrame(alerts)
@@ -93,7 +89,7 @@ def detect_success_after_failures(
 
     df = events.copy()
 
-    # Keep only events we care about
+   
     failures = df[
         (df["event_type"] == "FAILED_LOGIN")
         & df["ip"].notna()
@@ -127,7 +123,7 @@ def detect_success_after_failures(
         success_time = success["timestamp"]
         username = success["username"]
 
-        # Look backward in time for failures from same IP
+        
         recent_failures = failures[
             (failures["ip"] == ip)
             & (failures["timestamp"] >= success_time - window)
