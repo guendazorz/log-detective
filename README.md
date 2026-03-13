@@ -12,8 +12,6 @@ The goal of the project is to better understand how \*\*log analysis and event c
 
 
 
-\---
-
 
 
 \## Features
@@ -36,8 +34,6 @@ The goal of the project is to better understand how \*\*log analysis and event c
 
 
 
-\---
-
 
 
 \## Detection Rules
@@ -55,8 +51,6 @@ Triggers when multiple failed login attempts from the same IP occur within a def
 Flags a successful login that occurs after repeated failed attempts from the same IP address, which can indicate credential compromise.
 
 
-
-\---
 
 
 
@@ -80,11 +74,27 @@ The project includes a \*\*Streamlit dashboard\*\* that allows users to:
 
 
 
-\---
-
 
 
 \## Screenshots
+
+
+
+\### Dashboard Overview
+
+!\[Dashboard Overview](docs/screenshots/dashboard\_overview.png)
+
+
+
+\### Alerts Generated
+
+!\[Alerts Table](docs/screenshots/alerts\_table.png)
+
+
+
+\### Parsed Authentication Events
+
+!\[Parsed Events](docs/screenshots/parsed\_events.png)
 
 
 
@@ -93,6 +103,56 @@ The project includes a \*\*Streamlit dashboard\*\* that allows users to:
 
 
 \## Project Structure
+
+
+
+\## Project Structure
+
+
+
+The repository is organized to separate data ingestion, detection logic, visualization, and testing components.
+
+
+
+log-detective/
+
+│
+
+├── data/                 # Sample authentication log used for testing
+
+│   └── sample\_auth.log
+
+│
+
+├── src/                  # Core application code
+
+│   ├── parser.py         # Parses Linux auth.log entries into structured events
+
+│   ├── detections.py     # Detection rules (brute force, success after failures)
+
+│   ├── charts.py         # Visualization functions
+
+│   ├── run.py            # CLI pipeline to run detections and export results
+
+│   └── app.py            # Streamlit dashboard
+
+│
+
+├── tests/                # Unit tests for parser and detection logic
+
+│
+
+├── docs/
+
+│   └── screenshots/      # Images used in the README
+
+│
+
+├── README.md             # Project documentation
+
+├── pyproject.toml        # Project dependencies and configuration
+
+└── .gitignore
 
 
 
