@@ -13,8 +13,8 @@ from src.charts import plot_top_attacking_ips, plot_failed_login_timeline
 
 st.set_page_config(page_title="Log Detective", layout="wide")
 
-st.title("🕵️ Log Detective — Mini SOC Dashboard")
-st.caption("Parse Linux auth logs → detect suspicious patterns → visualize + export alerts")
+st.title("Log Detective — Mini SOC Dashboard")
+st.caption("Parse Linux authentication logs, detect suspicious login activity, and visualize trends")
 
 
 # Sidebar controls
@@ -106,7 +106,7 @@ with col4:
 left, right = st.columns([1, 1])
 
 with left:
-    st.subheader("🚨 Alerts")
+    st.subheader("Alerts")
     if all_alerts.empty:
         st.success("No alerts detected with the current thresholds.")
     else:
@@ -121,7 +121,7 @@ with left:
         )
 
 with right:
-    st.subheader("📄 Parsed events (preview)")
+    st.subheader("Parsed events (preview)")
     st.dataframe(events.head(200), use_container_width=True)
 
     
@@ -135,7 +135,7 @@ with right:
 
 
 # Charts (generated to temp files)
-st.subheader("📊 Visuals")
+st.subheader("Visuals")
 
 chart1, chart2 = st.columns(2)
 
