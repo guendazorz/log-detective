@@ -1,398 +1,213 @@
-\# Log Detective — Mini SOC-Style Threat Detection Dashboard
-
-
+# Log Detective — Mini SOC-Style Threat Detection Dashboard
 
 Log Detective is a cybersecurity analytics project that demonstrates how authentication logs can be parsed, analyzed, and correlated to detect suspicious activity.
 
+The project simulates a simplified **Security Operations Center (SOC)** workflow:
 
+1. Ingest authentication logs
+2. Parse events into structured data
+3. Apply detection rules
+4. Generate alerts
+5. Visualize activity in an interactive dashboard
 
-The project simulates a simplified \*\*Security Operations Center (SOC)\*\* workflow:
+The goal of the project is to better understand how **log analysis and event correlation** can reveal real-world attack patterns such as brute-force login attempts.
 
+---
 
+# Features
 
-1\. Ingest authentication logs  
+* Parse Linux authentication logs (`auth.log`)
+* Detect **brute-force login attempts**
+* Detect **successful logins following repeated failures**
+* Generate structured alerts with evidence
+* Visualize attack activity in an interactive dashboard
+* Export alerts and parsed events as CSV files
+* Automated tests for detection logic
 
-2\. Parse events into structured data  
+---
 
-3\. Apply detection rules  
+# Detection Rules
 
-4\. Generate alerts  
-
-5\. Visualize activity in an interactive dashboard  
-
-
-
-The goal of the project is to better understand how \*\*log analysis and event correlation\*\* can reveal real-world attack patterns such as brute-force login attempts.
-
-
-
-\---
-
-
-
-\## Features
-
-
-
-\- Parse Linux authentication logs (`auth.log`)
-
-\- Detect \*\*brute-force login attempts\*\*
-
-\- Detect \*\*successful logins following repeated failures\*\*
-
-\- Generate structured alerts with evidence
-
-\- Visualize attack activity in an interactive dashboard
-
-\- Export alerts and parsed events as CSV files
-
-\- Automated tests for detection logic
-
-
-
-\---
-
-
-
-\## Detection Rules
-
-
-
-\### Brute Force Detection
-
-
+## Brute Force Detection
 
 Triggers when multiple failed login attempts from the same IP occur within a defined time window.
 
+This behavior is commonly associated with **password guessing or brute-force attacks**.
 
+---
 
-This behavior is commonly associated with \*\*password guessing or brute-force attacks\*\*.
-
-
-
-\---
-
-
-
-\### Successful Login After Failures
-
-
+## Successful Login After Failures
 
 Flags a successful login that occurs after repeated failed login attempts from the same IP address.
 
-
-
 This pattern may indicate:
 
+* Credential compromise
+* Successful brute-force attack
+* Account takeover
 
+---
 
-\- Credential compromise
+# Dashboard
 
-\- Successful brute-force attack
+The project includes a **Streamlit dashboard** that allows users to:
 
-\- Account takeover
+* View parsed authentication events
+* Review generated alerts
+* Adjust detection thresholds
+* Visualize login activity over time
+* Identify the most active attacking IPs
 
+---
 
+# Screenshots
 
-\---
+## Dashboard Overview
 
+![Dashboard Overview](https://github.com/guendazorz/log-detective/blob/main/docs/screenshots/dashboard_overview.png)
 
+## Alerts Generated
 
-\## Dashboard
+![Alerts Table](https://github.com/guendazorz/log-detective/blob/main/docs/screenshots/alerts_table.png)
 
+## Parsed Authentication Events
 
+![Parsed Events](https://github.com/guendazorz/log-detective/blob/main/docs/screenshots/parsed_events.png)
 
-The project includes a \*\*Streamlit dashboard\*\* that allows users to:
+---
 
+# Tech Stack
 
+* Python
+* Pandas
+* Streamlit
+* Matplotlib
+* Pytest
 
-\- View parsed authentication events
+---
 
-\- Review generated alerts
-
-\- Adjust detection thresholds
-
-\- Visualize login activity over time
-
-\- Identify the most active attacking IPs
-
-
-
-\---
-
-
-
-\## Screenshots
-
-
-
-\### Dashboard Overview
-
-!\[Dashboard Overview](https://github.com/guendazorz/log-detective/blob/38870300225f679624260c5d4151d86c3583de0b/docs/screenshots/alerts_table.png)
-
-
-
-\### Alerts Generated
-
-!\[Alerts Table](https://github.com/guendazorz/log-detective/blob/38870300225f679624260c5d4151d86c3583de0b/docs/screenshots/dashboard_overview.png)
-
-
-
-\### Parsed Authentication Events
-
-!\[Parsed Events](https://github.com/guendazorz/log-detective/blob/38870300225f679624260c5d4151d86c3583de0b/docs/screenshots/parsed_events.png)
-
-
-
-\---
-
-
-
-\## Tech Stack
-
-
-
-\- Python
-
-\- Pandas
-
-\- Streamlit
-
-\- Matplotlib
-
-\- Pytest
-
-
-
-\---
-
-
-
-\## Project Structure
-
-
+# Project Structure
 
 The repository is organized to separate data ingestion, detection logic, visualization, and testing components.
 
-
-
 ```
-
 log-detective/
 
-│
-
 ├── data/                 # Sample authentication log used for testing
-
-│   └── sample\_auth.log
-
+│   └── sample_auth.log
 │
-
 ├── src/                  # Core application code
-
 │   ├── parser.py         # Parses Linux auth.log entries into structured events
-
 │   ├── detections.py     # Detection rules (brute force, success after failures)
-
 │   ├── charts.py         # Visualization functions
-
 │   ├── run.py            # CLI pipeline to run detections and export results
-
 │   └── app.py            # Streamlit dashboard
-
 │
-
 ├── tests/                # Unit tests for parser and detection logic
-
 │
-
 ├── docs/
-
 │   └── screenshots/      # Images used in the README
-
 │
-
 ├── README.md             # Project documentation
-
 ├── pyproject.toml        # Project dependencies
-
 └── .gitignore
-
 ```
 
+---
 
-
-\---
-
-
-
-\## Installation
-
-
+# Installation
 
 Clone the repository:
 
-
-
-```bash
-
-git clone https://github.com/guendazorz/log-detective.git
-
-cd log-detective
-
 ```
-
-
+git clone https://github.com/guendazorz/log-detective.git
+cd log-detective
+```
 
 Create and activate a virtual environment:
 
-
-
-```bash
-
+```
 python -m venv .venv
-
-.\\.venv\\Scripts\\activate
-
 ```
 
+Windows:
 
+```
+.venv\Scripts\activate
+```
+
+macOS / Linux:
+
+```
+source .venv/bin/activate
+```
 
 Install dependencies:
 
-
-
-```bash
-
+```
 pip install -r requirements.txt
-
 ```
 
+---
 
-
-\---
-
-
-
-\## Running the Detection Pipeline
-
-
+# Running the Detection Pipeline
 
 Run the log analysis pipeline:
 
-
-
-```bash
-
-python -m src.run
-
 ```
-
-
+python -m src.run
+```
 
 This will:
 
+* Parse authentication logs
+* Run detection rules
+* Generate alerts
+* Export results
 
+---
 
-\- parse authentication logs
-
-\- run detection rules
-
-\- generate alerts
-
-\- export results
-
-
-
-\---
-
-
-
-\## Running the Dashboard
-
-
+# Running the Dashboard
 
 Start the Streamlit dashboard:
 
-
-
-```bash
-
-set PYTHONPATH=.
-
-streamlit run src/app.py
-
 ```
-
-
+set PYTHONPATH=.
+streamlit run src/app.py
+```
 
 The dashboard will open in your browser.
 
+---
 
-
-\---
-
-
-
-\## Running Tests
-
-
+# Running Tests
 
 Run automated tests with:
 
-
-
-```bash
-
+```
 pytest
-
 ```
 
+---
 
-
-\---
-
-
-
-\## Future Improvements
-
-
+# Future Improvements
 
 Possible future enhancements include:
 
+* Password spraying detection
+* Mapping detections to **MITRE ATT&CK techniques**
+* Support for additional log sources
+* Alert severity scoring
+* Integration with SIEM pipelines
 
+---
 
-\- Password spraying detection
-
-\- Mapping detections to \*\*MITRE ATT\&CK techniques\*\*
-
-\- Support for additional log sources
-
-\- Alert severity scoring
-
-\- Integration with SIEM pipelines
-
-
-
-\---
-
-
-
-\## What This Project Demonstrates
-
-
+# What This Project Demonstrates
 
 This project highlights practical security engineering concepts such as:
 
-
-
-\- Log parsing and normalization
-
-\- Event correlation
-
-\- Detection rule design
-
-\- Security data visualization
-
-\- Basic SOC-style monitoring workflows
-
+* Log parsing and normalization
+* Event correlation
+* Detection rule design
+* Security data visualization
+* Basic SOC-style monitoring workflows
