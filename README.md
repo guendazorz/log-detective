@@ -4,11 +4,11 @@
 
 Log Detective is a small security analytics project that demonstrates how authentication logs can be parsed, analyzed, and correlated to detect suspicious activity.  
 
-The project simulates a simplified \*\*Security Operations Center (SOC)\*\* workflow: ingest logs, apply detection rules, generate alerts, and visualize the results.
+The project simulates a simplified Security Operations Center (SOC) workflow: ingest logs, apply detection rules, generate alerts, and visualize the results.
 
 
 
-The goal of the project is to better understand how \*\*log analysis and event correlation\*\* can be used to detect real-world attack patterns such as brute-force login attempts.
+The goal of the project is to better understand how log analysis and event correlation can be used to detect real-world attack patterns such as brute-force login attempts.
 
 
 
@@ -58,7 +58,7 @@ Flags a successful login that occurs after repeated failed attempts from the sam
 
 
 
-The project includes a \*\*Streamlit dashboard\*\* that allows users to:
+The project includes a Streamlit dashboard that allows users to:
 
 
 
