@@ -128,19 +128,19 @@ The project includes a \*\*Streamlit dashboard\*\* that allows users to:
 
 \### Dashboard Overview
 
-!\[Dashboard Overview](docs/screenshots/dashboard\_overview.png)
+!\[Dashboard Overview](https://github.com/guendazorz/log-detective/blob/38870300225f679624260c5d4151d86c3583de0b/docs/screenshots/alerts_table.png)
 
 
 
 \### Alerts Generated
 
-!\[Alerts Table](docs/screenshots/alerts\_table.png)
+!\[Alerts Table](https://github.com/guendazorz/log-detective/blob/38870300225f679624260c5d4151d86c3583de0b/docs/screenshots/dashboard_overview.png)
 
 
 
 \### Parsed Authentication Events
 
-!\[Parsed Events](docs/screenshots/parsed\_events.png)
+!\[Parsed Events](https://github.com/guendazorz/log-detective/blob/38870300225f679624260c5d4151d86c3583de0b/docs/screenshots/parsed_events.png)
 
 
 
