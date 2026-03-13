@@ -1,16 +1,32 @@
-\# Log Detective — Mini SOC Threat Detection Dashboard
+\# Log Detective — Mini SOC-Style Threat Detection Dashboard
 
 
 
-Log Detective is a small security analytics project that demonstrates how authentication logs can be parsed, analyzed, and correlated to detect suspicious activity.  
-
-The project simulates a simplified Security Operations Center (SOC) workflow: ingest logs, apply detection rules, generate alerts, and visualize the results.
+Log Detective is a cybersecurity analytics project that demonstrates how authentication logs can be parsed, analyzed, and correlated to detect suspicious activity.
 
 
 
-The goal of the project is to better understand how log analysis and event correlation can be used to detect real-world attack patterns such as brute-force login attempts.
+The project simulates a simplified \*\*Security Operations Center (SOC)\*\* workflow:
 
 
+
+1\. Ingest authentication logs  
+
+2\. Parse events into structured data  
+
+3\. Apply detection rules  
+
+4\. Generate alerts  
+
+5\. Visualize activity in an interactive dashboard  
+
+
+
+The goal of the project is to better understand how \*\*log analysis and event correlation\*\* can reveal real-world attack patterns such as brute-force login attempts.
+
+
+
+\---
 
 
 
@@ -20,19 +36,21 @@ The goal of the project is to better understand how log analysis and event corre
 
 \- Parse Linux authentication logs (`auth.log`)
 
-\- Detect brute-force login attempts based on failed login patterns
+\- Detect \*\*brute-force login attempts\*\*
 
-\- Detect successful logins following repeated failures (possible compromise)
+\- Detect \*\*successful logins following repeated failures\*\*
 
 \- Generate structured alerts with evidence
 
-\- Visualize attack activity through an interactive dashboard
+\- Visualize attack activity in an interactive dashboard
 
 \- Export alerts and parsed events as CSV files
 
-\- Automated tests to validate detection logic
+\- Automated tests for detection logic
 
 
+
+\---
 
 
 
@@ -42,15 +60,41 @@ The goal of the project is to better understand how log analysis and event corre
 
 \### Brute Force Detection
 
+
+
 Triggers when multiple failed login attempts from the same IP occur within a defined time window.
+
+
+
+This behavior is commonly associated with \*\*password guessing or brute-force attacks\*\*.
+
+
+
+\---
 
 
 
 \### Successful Login After Failures
 
-Flags a successful login that occurs after repeated failed attempts from the same IP address, which can indicate credential compromise.
 
 
+Flags a successful login that occurs after repeated failed login attempts from the same IP address.
+
+
+
+This pattern may indicate:
+
+
+
+\- Credential compromise
+
+\- Successful brute-force attack
+
+\- Account takeover
+
+
+
+\---
 
 
 
@@ -58,7 +102,7 @@ Flags a successful login that occurs after repeated failed attempts from the sam
 
 
 
-The project includes a Streamlit dashboard that allows users to:
+The project includes a \*\*Streamlit dashboard\*\* that allows users to:
 
 
 
@@ -73,6 +117,8 @@ The project includes a Streamlit dashboard that allows users to:
 \- Identify the most active attacking IPs
 
 
+
+\---
 
 
 
@@ -98,11 +144,27 @@ The project includes a Streamlit dashboard that allows users to:
 
 
 
+\---
 
 
 
+\## Tech Stack
 
-\## Project Structure
+
+
+\- Python
+
+\- Pandas
+
+\- Streamlit
+
+\- Matplotlib
+
+\- Pytest
+
+
+
+\---
 
 
 
@@ -113,6 +175,8 @@ The project includes a Streamlit dashboard that allows users to:
 The repository is organized to separate data ingestion, detection logic, visualization, and testing components.
 
 
+
+```
 
 log-detective/
 
@@ -150,9 +214,185 @@ log-detective/
 
 ├── README.md             # Project documentation
 
-├── pyproject.toml        # Project dependencies and configuration
+├── pyproject.toml        # Project dependencies
 
 └── .gitignore
 
+```
 
+
+
+\---
+
+
+
+\## Installation
+
+
+
+Clone the repository:
+
+
+
+```bash
+
+git clone https://github.com/guendazorz/log-detective.git
+
+cd log-detective
+
+```
+
+
+
+Create and activate a virtual environment:
+
+
+
+```bash
+
+python -m venv .venv
+
+.\\.venv\\Scripts\\activate
+
+```
+
+
+
+Install dependencies:
+
+
+
+```bash
+
+pip install -r requirements.txt
+
+```
+
+
+
+\---
+
+
+
+\## Running the Detection Pipeline
+
+
+
+Run the log analysis pipeline:
+
+
+
+```bash
+
+python -m src.run
+
+```
+
+
+
+This will:
+
+
+
+\- parse authentication logs
+
+\- run detection rules
+
+\- generate alerts
+
+\- export results
+
+
+
+\---
+
+
+
+\## Running the Dashboard
+
+
+
+Start the Streamlit dashboard:
+
+
+
+```bash
+
+set PYTHONPATH=.
+
+streamlit run src/app.py
+
+```
+
+
+
+The dashboard will open in your browser.
+
+
+
+\---
+
+
+
+\## Running Tests
+
+
+
+Run automated tests with:
+
+
+
+```bash
+
+pytest
+
+```
+
+
+
+\---
+
+
+
+\## Future Improvements
+
+
+
+Possible future enhancements include:
+
+
+
+\- Password spraying detection
+
+\- Mapping detections to \*\*MITRE ATT\&CK techniques\*\*
+
+\- Support for additional log sources
+
+\- Alert severity scoring
+
+\- Integration with SIEM pipelines
+
+
+
+\---
+
+
+
+\## What This Project Demonstrates
+
+
+
+This project highlights practical security engineering concepts such as:
+
+
+
+\- Log parsing and normalization
+
+\- Event correlation
+
+\- Detection rule design
+
+\- Security data visualization
+
+\- Basic SOC-style monitoring workflows
 
